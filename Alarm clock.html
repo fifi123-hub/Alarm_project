@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alarm Clock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f0f8ff;
+    }
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    #clock {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alarm Clock</h1>
+  <div id="clock">00:00:00</div>
+
+  <label for="alarmTime">Set Alarm:</label>
+  <input type="time" id="alarmTime">
+  <button onclick="setAlarm()">Set</button>
+  <button onclick="clearAlarm()">Clear</button>
+
+  <audio id="alarmSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
+
+  <script>
+    let alarmTime = null;
+    let alarmTimeout = null;
+
+    function updateClock() {
+      const now = new Date();
+      const clock = document.getElementById('clock');
+      clock.textContent = now.toLocaleTimeString();
+
+      if (alarmTime && now.toLocaleTimeString().slice(0, 5) === alarmTime) {
+        document.getElementById('alarmSound').play();
+        clearAlarm(); // Stop repeating
+      }
+    }
+
+    setInterval(updateClock, 1000);
+
+    function setAlarm() {
+      const input = document.getElementById('alarmTime').value;
+      if (!input) {
+        alert("Please set a valid time.");
+        return;
+      }
+      alarmTime = input;
+      alert("Alarm set for " + alarmTime);
+    }
+
+    function clearAlarm() {
+      alarmTime = null;
+      document.getElementById('alarmSound').pause();
+      document.getElementById('alarmSound').currentTime = 0;
+      alert("Alarm cleared");
+    }
+  </script>
+</body>
+</html>
